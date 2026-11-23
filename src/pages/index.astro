@@ -8,6 +8,7 @@ import { formatSinceLabel } from '../lib/domainSince';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteAnalytics from '../components/SiteAnalytics.astro';
 import ThemeBoot from '../components/ThemeBoot.astro';
+import SiteOg from '../components/SiteOg.astro';
 import '../styles/global.css';
 
 type Site = {
@@ -106,6 +107,7 @@ const sites = (
 		<meta name="theme-color" content="#111111" id="theme-color" />
 		<link rel="icon" type="image/svg+xml" href={`${baseUrl}favicon.svg`} />
 		<title>.me search</title>
+		<SiteOg />
 		<ThemeBoot />
 		<SiteAnalytics />
 	</head>

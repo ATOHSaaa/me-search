@@ -3,6 +3,7 @@ import SiteFooter from '../components/SiteFooter.astro';
 import SiteAnalytics from '../components/SiteAnalytics.astro';
 import ThemeBoot from '../components/ThemeBoot.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
+import SiteOg from '../components/SiteOg.astro';
 import { contactFormUrl } from '../data/contact';
 import '../styles/global.css';
 
@@ -16,12 +17,9 @@ const baseUrl = import.meta.env.BASE_URL;
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="generator" content={Astro.generator} />
 		<meta name="theme-color" content="#111111" id="theme-color" />
-		<meta
-			name="description"
-			content=".me search は個人サイトやポートフォリオサイトなどを掲載するギャラリーサイトです。"
-		/>
 		<link rel="icon" type="image/svg+xml" href={`${baseUrl}favicon.svg`} />
 		<title>About · .me search</title>
+		<SiteOg title="About · .me search" />
 		<ThemeBoot />
 		<SiteAnalytics />
 	</head>
