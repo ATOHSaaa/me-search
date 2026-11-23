@@ -7,6 +7,7 @@ import { collectAllTags, normalizeTags } from '../lib/siteTags';
 import { formatSinceLabel } from '../lib/domainSince';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteAnalytics from '../components/SiteAnalytics.astro';
+import SiteGtmBody from '../components/SiteGtmBody.astro';
 import ThemeBoot from '../components/ThemeBoot.astro';
 import SiteOg from '../components/SiteOg.astro';
 import '../styles/global.css';
@@ -112,6 +113,7 @@ const sites = (
 		<SiteAnalytics />
 	</head>
 	<body>
+		<SiteGtmBody />
 		<div class="shell">
 			<header>
 				<h1>

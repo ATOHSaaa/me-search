@@ -28,6 +28,7 @@ jobs:
         env:
           ASTRO_SITE: https://me.atohs.me
           ASTRO_BASE: /
+          PUBLIC_GTM_CONTAINER_ID: GTM-MDLDCN5V
           PUBLIC_GA_MEASUREMENT_ID: ${{ secrets.PUBLIC_GA_MEASUREMENT_ID }}
           PUBLIC_CLARITY_PROJECT_ID: ${{ secrets.PUBLIC_CLARITY_PROJECT_ID }}
       - uses: actions/upload-pages-artifact@v3

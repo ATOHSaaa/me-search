@@ -1,6 +1,7 @@
 ---
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteAnalytics from '../components/SiteAnalytics.astro';
+import SiteGtmBody from '../components/SiteGtmBody.astro';
 import ThemeBoot from '../components/ThemeBoot.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
 import SiteOg from '../components/SiteOg.astro';
@@ -28,6 +29,7 @@ const baseUrl = import.meta.env.BASE_URL;
 		<SiteAnalytics />
 	</head>
 	<body>
+		<SiteGtmBody />
 		<div class="shell">
 			<header>
 				<h1>
@@ -62,9 +64,14 @@ const baseUrl = import.meta.env.BASE_URL;
 						また、表示設定（テーマ・プレビュー形式・静止画／GIF）については、お使いのブラウザの localStorage に保存し、次回訪問時に引き継ぎます。この情報は atohs のサーバーには送信されません。
 					</p>
 
+					<h3>Google タグ マネージャー（GTM）</h3>
+					<p>
+						本サイトでは Google LLC が提供する Google タグ マネージャーを用いて、計測タグ（GA4 など）を配信しています。GTM 経由で各サービスにデータが送信される場合があります。
+					</p>
+
 					<h3>Google Analytics 4</h3>
 					<p>
-						本サイトでは Google LLC が提供する Google Analytics 4（GA4）を用いて、アクセス数や閲覧傾向を統計的に分析しています。GA4 は Cookie 等を利用してデータを収集することがあります。詳細は
+						GA4 は主に GTM コンテナ経由で読み込まれ、アクセス数や閲覧傾向を統計的に分析しています。GA4 は Cookie 等を利用してデータを収集することがあります。詳細は
 						<a
 							href="https://policies.google.com/privacy?hl=ja"
 							rel="noopener noreferrer"

@@ -1,6 +1,7 @@
 ---
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteAnalytics from '../components/SiteAnalytics.astro';
+import SiteGtmBody from '../components/SiteGtmBody.astro';
 import ThemeBoot from '../components/ThemeBoot.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
 import SiteOg from '../components/SiteOg.astro';
@@ -24,6 +25,7 @@ const baseUrl = import.meta.env.BASE_URL;
 		<SiteAnalytics />
 	</head>
 	<body>
+		<SiteGtmBody />
 		<div class="shell">
 			<header>
 				<h1>
