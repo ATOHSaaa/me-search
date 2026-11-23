@@ -1,0 +1,38 @@
+<button
+	type="button"
+	class="header-btn theme-toggle"
+	id="theme-toggle"
+	aria-pressed="false"
+	aria-label="ライトモードに切り替え"
+>
+	<span class="header-btn__glyph theme-toggle__glyph" aria-hidden="true"></span>
+</button>
+
+<script is:inline>
+	(function () {
+		var themeKey = 'me-search-theme';
+		var root = document.documentElement;
+		var themeButton = document.getElementById('theme-toggle');
+		if (!themeButton) return;
+
+		function syncTheme(theme) {
+			var light = theme === 'light';
+			themeButton.setAttribute('aria-pressed', light ? 'true' : 'false');
+			themeButton.setAttribute(
+				'aria-label',
+				light ? 'ダークモードに切り替え' : 'ライトモードに切り替え',
+			);
+			var meta = document.getElementById('theme-color');
+			if (meta) meta.content = light ? '#f6f6f4' : '#111111';
+		}
+
+		syncTheme(root.dataset.theme || 'dark');
+
+		themeButton.addEventListener('click', function () {
+			var next = root.dataset.theme === 'light' ? 'dark' : 'light';
+			root.dataset.theme = next;
+			localStorage.setItem(themeKey, next);
+			syncTheme(next);
+		});
+	})();
+</script>

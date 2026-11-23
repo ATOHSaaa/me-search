@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" fill="#f6f6f4"/>
+  <rect x="2.5" y="2.5" width="27" height="27" fill="none" stroke="#161616" stroke-width="1.5"/>
+  <rect x="2.5" y="2.5" width="27" height="16" fill="#161616"/>
+  <style>
+    @media (prefers-color-scheme: dark) {
+      rect:first-child { fill: #111111; }
+      rect:nth-child(2) { stroke: #f3f3f1; }
+      rect:nth-child(3) { fill: #f3f3f1; }
+    }
+  </style>
+</svg>

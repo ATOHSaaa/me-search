@@ -1,0 +1,63 @@
+---
+import SiteFooter from '../components/SiteFooter.astro';
+import SiteAnalytics from '../components/SiteAnalytics.astro';
+import ThemeBoot from '../components/ThemeBoot.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
+import { contactFormUrl } from '../data/contact';
+import '../styles/global.css';
+
+const baseUrl = import.meta.env.BASE_URL;
+---
+
+<!doctype html>
+<html lang="ja">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="theme-color" content="#111111" id="theme-color" />
+		<meta
+			name="description"
+			content=".me search は個人サイトやポートフォリオサイトなどを掲載するギャラリーサイトです。"
+		/>
+		<link rel="icon" type="image/svg+xml" href={`${baseUrl}favicon.svg`} />
+		<title>About · .me search</title>
+		<ThemeBoot />
+		<SiteAnalytics />
+	</head>
+	<body>
+		<div class="shell">
+			<header>
+				<h1>
+					<a class="home-link" href={baseUrl}>.me search</a>
+				</h1>
+				<div class="header-actions">
+					<ThemeToggle />
+				</div>
+			</header>
+			<main class="about">
+				<h2 class="about__title">About</h2>
+				<div class="about__body">
+					<p>
+						「.me search」は、個人サイトやポートフォリオサイトなどを掲載するギャラリーサイトです。<a
+							href="https://atohs.me/"
+							rel="noopener noreferrer"
+							target="_blank">atohs</a
+						>が個人で運営しています。
+					</p>
+					<p>
+						なお、.meドメイン以外のサイト、複数人で制作されたサイト、法人運営のサイトも掲載することがございます。あしからずご了承ください。
+					</p>
+					<p>
+						ご質問や掲載の取り下げなど、何かございましたら<a
+							href={contactFormUrl}
+							rel="noopener noreferrer"
+							target="_blank">お問い合わせフォーム</a
+						>よりお問い合わせいただけますと幸いです。
+					</p>
+				</div>
+			</main>
+			<SiteFooter />
+		</div>
+	</body>
+</html>

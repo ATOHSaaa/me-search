@@ -1,0 +1,292 @@
+[
+  {
+    "url": "https://109ichiki.com/",
+    "shot": "ichiki",
+    "lang": "ja",
+    "readyMs": 12000,
+    "motionIntro": true,
+    "introSampleMs": [
+      0,
+      400,
+      1000,
+      2000,
+      3500,
+      5000,
+      7000,
+      9500,
+      12000
+    ],
+    "gifDelayMs": 180,
+    "addedAt": "2026-11-21T19:46:00+09:00",
+    "title": "Contact | 1:09 Portfolio",
+    "tags": [
+      "イラストレーター",
+      "ポートフォリオ"
+    ],
+    "domainSince": "2024-02-27T15:39:28.000Z"
+  },
+  {
+    "url": "https://tawa.me/",
+    "shot": "tawa",
+    "lang": "ja",
+    "addedAt": "2026-11-21T19:35:00+09:00",
+    "title": "tawa.me",
+    "tags": [
+      "エンジニア",
+      "個人サイト"
+    ],
+    "domainSince": "2018-09-24T01:01:57.000Z"
+  },
+  {
+    "url": "https://blog.cp20.dev/",
+    "shot": "cp20blog",
+    "lang": "ja",
+    "darkMode": true,
+    "addedAt": "2026-11-21T19:32:00+09:00",
+    "title": "しぴろぐ",
+    "tags": [
+      "ブログ",
+      "技術"
+    ]
+  },
+  {
+    "url": "https://doma.solutions/",
+    "shot": "doma",
+    "lang": "ja",
+    "readyMs": 5500,
+    "motionIntro": true,
+    "gifDelayMs": 180,
+    "addedAt": "2026-11-21T19:26:00+09:00",
+    "title": "Contact | どまそ - Portfolio Site",
+    "tags": [
+      "ポートフォリオ",
+      "デザイン"
+    ]
+  },
+  {
+    "url": "https://catnose.me/",
+    "shot": "catnose",
+    "readyMs": 5000,
+    "addedAt": "2026-11-21T18:56:00+09:00",
+    "title": "catnose",
+    "tags": [
+      "エンジニア",
+      "デザイン",
+      "ポートフォリオ"
+    ],
+    "domainSince": "2021-12-23T14:13:30.000Z"
+  },
+  {
+    "url": "https://baku89.com/",
+    "shot": "baku89",
+    "readyMs": 5000,
+    "scrollPxPerFrameDesktop": 200,
+    "gifDelayMsDesktop": 220,
+    "addedAt": "2026-11-21T18:25:00+09:00",
+    "title": "Baku Hashimoto",
+    "tags": [
+      "映像",
+      "ポートフォリオ",
+      "ジェネラティブ"
+    ],
+    "domainSince": "2012-06-06T06:22:33.000Z"
+  },
+  {
+    "url": "https://doisena.jp/",
+    "shot": "doisena",
+    "lang": "ja",
+    "readyMs": 5000,
+    "addedAt": "2026-11-21T15:28:00+09:00",
+    "title": "Illustrator どいせな ポートフォリオサイト",
+    "tags": [
+      "イラストレーター",
+      "ポートフォリオ"
+    ],
+    "domainSince": "2024-03-21T00:00:00.000Z"
+  },
+  {
+    "url": "https://xn--n8je9hcf0t4a.xn--q9jyb4c/",
+    "shot": "inaniwaudon",
+    "lang": "ja",
+    "addedAt": "2026-11-21T15:26:00+09:00",
+    "title": "いなにわうどん.みんな",
+    "tags": [
+      "個人サイト"
+    ],
+    "domainSince": "2021-09-15T18:18:45.212Z"
+  },
+  {
+    "url": "https://scrapbox.io/techstock/",
+    "shot": "techstock",
+    "lang": "ja",
+    "readyMs": 3000,
+    "addedAt": "2026-11-21T15:24:00+09:00",
+    "title": "TECHSTOCK™︎",
+    "tags": [
+      "メディア",
+      "テック"
+    ]
+  },
+  {
+    "url": "https://unvalley.me/",
+    "shot": "unvalley",
+    "darkMode": true,
+    "addedAt": "2026-11-21T15:22:00+09:00",
+    "title": "UNV",
+    "tags": [
+      "デザイン",
+      "ポートフォリオ"
+    ],
+    "domainSince": "2021-03-13T23:52:58.000Z"
+  },
+  {
+    "url": "https://aidididi0045-cpu.github.io/",
+    "shot": "aidididi",
+    "readyMs": 5000,
+    "addedAt": "2026-11-21T15:20:00+09:00",
+    "title": "DiDi PORTFOLIO SITE",
+    "tags": [
+      "イラストレーター",
+      "ポートフォリオ"
+    ]
+  },
+  {
+    "url": "https://tsukurikata.net/",
+    "shot": "tsukurikata",
+    "lang": "ja",
+    "addedAt": "2026-11-21T15:18:00+09:00",
+    "title": "あたらしいホームページのつくりかた",
+    "tags": [
+      "ブログ",
+      "ウェブ"
+    ],
+    "domainSince": "2026-11-10T01:39:42.000Z"
+  },
+  {
+    "url": "https://suzuki-non.com/",
+    "shot": "suzukinon",
+    "lang": "ja",
+    "addedAt": "2026-11-21T15:16:00+09:00",
+    "title": "鈴希 のん ポートフォリオサイト",
+    "tags": [
+      "イラストレーター",
+      "ポートフォリオ"
+    ],
+    "domainSince": "2026-11-15T02:45:58.000Z"
+  },
+  {
+    "url": "https://fuji-maki.me/ja",
+    "shot": "fujimaki",
+    "lang": "ja",
+    "readyMs": 4500,
+    "motionMode": "keyboard",
+    "motionKeys": [
+      "ArrowRight",
+      "ArrowRight",
+      "ArrowDown",
+      "ArrowLeft",
+      "ArrowUp",
+      "Enter"
+    ],
+    "gifDelayMs": 220,
+    "addedAt": "2026-11-21T15:14:00+09:00",
+    "title": "藤巻雄飛 (Taketo Fujimaki) - ポートフォリオ",
+    "tags": [
+      "イラストレーター",
+      "ポートフォリオ"
+    ],
+    "domainSince": "2026-07-07T01:56:56.000Z"
+  },
+  {
+    "url": "https://rainkudo.com/",
+    "shot": "rainkudo",
+    "lang": "ja",
+    "addedAt": "2026-11-21T15:12:00+09:00",
+    "title": "くどうれいん公式ホームページ",
+    "tags": [
+      "作家",
+      "個人サイト"
+    ],
+    "domainSince": "2020-06-27T08:20:33.000Z"
+  },
+  {
+    "url": "https://fkaorism.jp/",
+    "shot": "fkaorism",
+    "lang": "ja",
+    "readyMs": 3000,
+    "addedAt": "2026-11-21T15:10:00+09:00",
+    "title": "f*kaori illustrator Portfolio | エフカオリ",
+    "tags": [
+      "イラストレーター",
+      "ポートフォリオ"
+    ],
+    "domainSince": "2026-09-07T00:00:00.000Z"
+  },
+  {
+    "url": "https://seiya8bit.com/",
+    "shot": "seiya8bit",
+    "addedAt": "2026-11-21T15:05:00+09:00",
+    "title": "seiya8bit.com",
+    "tags": [
+      "エンジニア",
+      "ポートフォリオ"
+    ],
+    "domainSince": "2025-02-23T11:08:59.000Z"
+  },
+  {
+    "url": "https://iconicllc.jp/",
+    "shot": "iconic",
+    "lang": "ja",
+    "readyMs": 1200,
+    "motionMode": "iconic",
+    "gifDelayMs": 280,
+    "addedAt": "2026-11-21T15:02:00+09:00",
+    "title": "iconic LLC",
+    "tags": [
+      "デザイン",
+      "スタジオ"
+    ],
+    "domainSince": "2026-06-27T00:00:00.000Z"
+  },
+  {
+    "url": "https://gototatsuya.net/",
+    "shot": "gototatsuya",
+    "lang": "ja",
+    "addedAt": "2026-11-21T14:41:00+09:00",
+    "title": "誰も知らない部屋 | He who knows, does not speak.",
+    "tags": [
+      "アート",
+      "個人サイト"
+    ],
+    "domainSince": "2026-06-07T16:42:54.000Z"
+  },
+  {
+    "url": "https://www.kotap.dev/",
+    "shot": "kotap",
+    "darkMode": true,
+    "readyMs": 5000,
+    "gifDelayMs": 200,
+    "addedAt": "2026-11-21T14:36:00+09:00",
+    "title": "Kota Mizuno — Portfolio",
+    "tags": [
+      "エンジニア",
+      "ポートフォリオ"
+    ],
+    "domainSince": "2025-06-07T16:43:32.209Z"
+  },
+  {
+    "url": "https://yui540.com/",
+    "shot": "yui540",
+    "lang": "ja",
+    "scrollPxPerFrame": 140,
+    "scrollFrames": 110,
+    "gifDelayMs": 320,
+    "addedAt": "2026-11-21T14:28:00+09:00",
+    "title": "yui.",
+    "tags": [
+      "イラストレーター",
+      "ポートフォリオ"
+    ],
+    "domainSince": "2023-09-09T01:39:59.000Z"
+  }
+]

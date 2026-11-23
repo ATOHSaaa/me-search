@@ -1,0 +1,488 @@
+---
+import { Image } from 'astro:assets';
+import { domainToUnicode } from 'node:url';
+import rawSites from '../data/sites.json';
+import { fetchSiteTitle } from '../lib/siteTitle';
+import { collectAllTags, normalizeTags } from '../lib/siteTags';
+import { formatSinceLabel } from '../lib/domainSince';
+import SiteFooter from '../components/SiteFooter.astro';
+import SiteAnalytics from '../components/SiteAnalytics.astro';
+import ThemeBoot from '../components/ThemeBoot.astro';
+import '../styles/global.css';
+
+type Site = {
+	title?: string;
+	url: string;
+	shot: string;
+	lang?: string;
+	addedAt?: string;
+	domainSince?: string;
+	readyMs?: number;
+	darkMode?: boolean;
+	tags?: string[];
+};
+
+function sortHost(url: string) {
+	const parsed = new URL(url);
+	return domainToUnicode(parsed.hostname.replace(/^www\./, '')).toLowerCase();
+}
+
+const shots = import.meta.glob<{ default: ImageMetadata }>('../assets/shots/*.webp', {
+	eager: true,
+});
+
+const motionShots = import.meta.glob<string>('../assets/shots/*.gif', {
+	eager: true,
+	query: '?url',
+	import: 'default',
+});
+
+function displayUrl(url: string) {
+	const parsed = new URL(url);
+	const host = domainToUnicode(parsed.hostname.replace(/^www\./, ''));
+	const path = parsed.pathname.replace(/\/$/, '');
+	return path ? `${host}${path}` : host;
+}
+
+const baseUrl = import.meta.env.BASE_URL;
+
+const previewAspect = '960 / 520';
+const mobilePreviewAspect = '390 / 780';
+
+const listSites = (rawSites as Site[]).slice();
+const tagCatalog = collectAllTags(listSites);
+
+const sites = (
+	await Promise.all(
+		listSites.map(async (site) => {
+			const imageWide = shots[`../assets/shots/${site.shot}.webp`]?.default;
+			const imageMobile = shots[`../assets/shots/${site.shot}-mobile.webp`]?.default;
+			const imageWideDark = shots[`../assets/shots/${site.shot}-dark.webp`]?.default;
+			const imageMobileDark = shots[`../assets/shots/${site.shot}-mobile-dark.webp`]?.default;
+			const gifWide = motionShots[`../assets/shots/${site.shot}.gif`];
+			const gifMobile = motionShots[`../assets/shots/${site.shot}-mobile.gif`];
+			const gifWideDark = motionShots[`../assets/shots/${site.shot}-dark.gif`];
+			const gifMobileDark = motionShots[`../assets/shots/${site.shot}-mobile-dark.gif`];
+			if (!imageWide || !imageMobile) return null;
+			const hasDarkStill = Boolean(imageWideDark && imageMobileDark);
+			const hasDarkMotion = Boolean(gifWideDark && gifMobileDark);
+
+			const display = displayUrl(site.url);
+			const fromHtml = await fetchSiteTitle(site.url);
+			const title = fromHtml || site.title?.trim() || display;
+			const tags = normalizeTags(site.tags);
+			const sinceLabel = formatSinceLabel(site.domainSince);
+
+			return {
+				...site,
+				title,
+				tags,
+				imageWide,
+				imageMobile,
+				imageWideDark,
+				imageMobileDark,
+				gifWide,
+				gifMobile,
+				gifWideDark,
+				gifMobileDark,
+				hasDarkStill,
+				hasDarkMotion,
+				hasMotion: Boolean(gifWide && gifMobile),
+				display,
+				sinceLabel,
+				lang: site.lang ?? 'en',
+			};
+		}),
+	)
+).filter((site): site is NonNullable<typeof site> => site !== null);
+---
+
+<!doctype html>
+<html lang="ja">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="theme-color" content="#111111" id="theme-color" />
+		<link rel="icon" type="image/svg+xml" href={`${baseUrl}favicon.svg`} />
+		<title>.me search</title>
+		<ThemeBoot />
+		<SiteAnalytics />
+	</head>
+	<body>
+		<div class="shell">
+			<header>
+				<h1>
+					<a class="home-link" href={baseUrl}>.me search</a>
+				</h1>
+				<div class="header-actions">
+					<button
+						type="button"
+						class="header-btn view-toggle"
+						id="view-toggle"
+						aria-pressed="false"
+						aria-label="表示を切り替え"
+					>
+						<span class="header-btn__glyph view-toggle__glyph" aria-hidden="true"></span>
+					</button>
+					<button
+						type="button"
+						class="header-btn media-toggle"
+						id="media-toggle"
+						aria-pressed="false"
+						aria-label="静止画と動画を切り替え"
+					>
+						<span class="header-btn__glyph media-toggle__glyph" aria-hidden="true"></span>
+					</button>
+					<button
+						type="button"
+						class="header-btn sort-toggle"
+						id="sort-toggle"
+						aria-pressed="false"
+						aria-label="並び順を切り替え"
+					>
+						<span class="header-btn__glyph sort-toggle__glyph" aria-hidden="true"></span>
+					</button>
+					<button
+						type="button"
+						class="header-btn sort-dir-toggle"
+						id="sort-dir-toggle"
+						aria-pressed="true"
+						aria-label="降順"
+					>
+						<span class="header-btn__glyph sort-dir-toggle__glyph" aria-hidden="true"></span>
+					</button>
+					<button
+						type="button"
+						class="header-btn theme-toggle"
+						id="theme-toggle"
+						aria-pressed="false"
+						aria-label="ライトモードに切り替え"
+					>
+						<span class="header-btn__glyph theme-toggle__glyph" aria-hidden="true"></span>
+					</button>
+				</div>
+			</header>
+			<main>
+				<script
+					is:inline
+					type="application/json"
+					id="me-search-tag-catalog"
+					set:html={JSON.stringify(tagCatalog)}
+				/>
+				<ul class="grid">
+					{
+						sites.map((site, index) => (
+							<li
+								data-shot={site.shot}
+								data-added-at={site.addedAt ?? ''}
+								data-domain-since={site.domainSince ?? ''}
+								data-sort-host={sortHost(site.url)}
+								data-tags={JSON.stringify(site.tags)}
+							>
+								<a class="card" href={site.url} target="_blank" rel="noopener noreferrer">
+									<article>
+										<div class="card-media">
+										<Image
+											class="card-preview card-preview--wide card-preview--still card-preview--light"
+											src={site.imageWide}
+											alt=""
+											widths={[480, 720, 960]}
+											sizes="(min-width: 72rem) 42rem, (min-width: 40rem) 92vw, calc(100vw - 2.2rem)"
+											loading={index < 3 ? 'eager' : 'lazy'}
+											fetchpriority={index === 0 ? 'high' : undefined}
+											decoding={index === 0 ? 'sync' : 'async'}
+											style={`--preview-aspect: ${previewAspect};`}
+										/>
+										{site.gifWide ? (
+											<img
+												class="card-preview card-preview--wide card-preview--motion card-preview--light"
+												src={site.gifWide}
+												alt=""
+												width="960"
+												height="520"
+												loading={index < 3 ? 'eager' : 'lazy'}
+												decoding="async"
+												style={`--preview-aspect: ${previewAspect};`}
+											/>
+										) : null}
+										<Image
+											class="card-preview card-preview--mobile card-preview--still card-preview--light"
+											src={site.imageMobile}
+											alt=""
+											widths={[260, 390, 520]}
+											sizes="(min-width: 72rem) 28rem, (min-width: 40rem) 46vw, calc(100vw - 2.2rem)"
+											loading={index < 3 ? 'eager' : 'lazy'}
+											decoding={index === 0 ? 'sync' : 'async'}
+											style={`--preview-aspect: ${mobilePreviewAspect};`}
+										/>
+										{site.gifMobile ? (
+											<img
+												class="card-preview card-preview--mobile card-preview--motion card-preview--light"
+												src={site.gifMobile}
+												alt=""
+												width="390"
+												height="780"
+												loading={index < 3 ? 'eager' : 'lazy'}
+												decoding="async"
+												style={`--preview-aspect: ${mobilePreviewAspect};`}
+											/>
+										) : null}
+										{site.hasDarkStill && site.imageWideDark && site.imageMobileDark ? (
+											<>
+												<Image
+													class="card-preview card-preview--wide card-preview--still card-preview--dark"
+													src={site.imageWideDark}
+													alt=""
+													widths={[480, 720, 960]}
+													sizes="(min-width: 72rem) 42rem, (min-width: 40rem) 92vw, calc(100vw - 2.2rem)"
+													loading={index < 3 ? 'eager' : 'lazy'}
+													decoding="async"
+													style={`--preview-aspect: ${previewAspect};`}
+												/>
+												<Image
+													class="card-preview card-preview--mobile card-preview--still card-preview--dark"
+													src={site.imageMobileDark}
+													alt=""
+													widths={[260, 390, 520]}
+													sizes="(min-width: 72rem) 28rem, (min-width: 40rem) 46vw, calc(100vw - 2.2rem)"
+													loading={index < 3 ? 'eager' : 'lazy'}
+													decoding="async"
+													style={`--preview-aspect: ${mobilePreviewAspect};`}
+												/>
+											</>
+										) : null}
+										{site.hasDarkMotion && site.gifWideDark && site.gifMobileDark ? (
+											<>
+												<img
+													class="card-preview card-preview--wide card-preview--motion card-preview--dark"
+													src={site.gifWideDark}
+													alt=""
+													width="960"
+													height="520"
+													loading={index < 3 ? 'eager' : 'lazy'}
+													decoding="async"
+													style={`--preview-aspect: ${previewAspect};`}
+												/>
+												<img
+													class="card-preview card-preview--mobile card-preview--motion card-preview--dark"
+													src={site.gifMobileDark}
+													alt=""
+													width="390"
+													height="780"
+													loading={index < 3 ? 'eager' : 'lazy'}
+													decoding="async"
+													style={`--preview-aspect: ${mobilePreviewAspect};`}
+												/>
+											</>
+										) : null}
+										</div>
+										<h2 lang={site.lang}>{site.title}</h2>
+										<p class="card-url" lang="en">{site.display}</p>
+										<p class="card-since" lang="en">{site.sinceLabel ?? 'since ?'}</p>
+									</article>
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</main>
+			<SiteFooter />
+		</div>
+		<script is:inline>
+			(function () {
+				var themeKey = 'me-search-theme';
+				var viewKey = 'me-search-view';
+				var mediaKey = 'me-search-media';
+				var sortKey = 'me-search-sort';
+				var sortDirKey = 'me-search-sort-dir';
+				var root = document.documentElement;
+				var themeButton = document.getElementById('theme-toggle');
+				var viewButton = document.getElementById('view-toggle');
+				var mediaButton = document.getElementById('media-toggle');
+				var sortButton = document.getElementById('sort-toggle');
+				var sortDirButton = document.getElementById('sort-dir-toggle');
+				if (
+					!themeButton ||
+					!viewButton ||
+					!mediaButton ||
+					!sortButton ||
+					!sortDirButton
+				) {
+					return;
+				}
+
+				var sortOrder = ['random', 'added', 'domain'];
+				var sortLabels = {
+					random: '並び: ランダム。次: 掲載の更新日',
+					added: '並び: 掲載の更新日。次: ドメイン取得日',
+					domain: '並び: ドメイン取得日。次: ランダム',
+				};
+
+				function parseTime(value) {
+					var t = Date.parse(value || '');
+					return Number.isFinite(t) ? t : null;
+				}
+
+				function applyGridOrder() {
+					var grid = document.querySelector('.grid');
+					if (!grid) return;
+					var items = Array.from(grid.children);
+					if (!items.length) return;
+
+					var mode = root.dataset.sort || 'random';
+					var dir = root.dataset.sortDir === 'asc' ? 'asc' : 'desc';
+					var mult = dir === 'asc' ? 1 : -1;
+
+					if (mode === 'random') {
+						for (var a = items.length - 1; a > 0; a--) {
+							var b = Math.floor(Math.random() * (a + 1));
+							var swap = items[a];
+							items[a] = items[b];
+							items[b] = swap;
+						}
+					} else {
+						items.sort(function (left, right) {
+							if (mode === 'added') {
+								var ta = parseTime(left.getAttribute('data-added-at'));
+								var tb = parseTime(right.getAttribute('data-added-at'));
+								ta = ta === null ? 0 : ta;
+								tb = tb === null ? 0 : tb;
+								if (ta !== tb) return mult * (ta - tb);
+							}
+							if (mode === 'domain') {
+								var da = parseTime(left.getAttribute('data-domain-since'));
+								var db = parseTime(right.getAttribute('data-domain-since'));
+								var hasA = da !== null;
+								var hasB = db !== null;
+								if (hasA && hasB && da !== db) return mult * (da - db);
+								if (hasA !== hasB) return hasA ? -1 : 1;
+							}
+							var ha = left.getAttribute('data-sort-host') || '';
+							var hb = right.getAttribute('data-sort-host') || '';
+							var nameCmp = ha.localeCompare(hb, 'ja');
+							if (nameCmp !== 0) return mult * nameCmp;
+							var sa = left.getAttribute('data-shot') || '';
+							var sb = right.getAttribute('data-shot') || '';
+							return mult * sa.localeCompare(sb, 'ja');
+						});
+					}
+
+					for (var c = 0; c < items.length; c++) {
+						grid.appendChild(items[c]);
+					}
+				}
+
+				function syncSort(sort) {
+					if (sortOrder.indexOf(sort) === -1) sort = 'random';
+					sortButton.setAttribute('aria-pressed', sort === 'random' ? 'false' : 'true');
+					sortButton.setAttribute('aria-label', sortLabels[sort] || sortLabels.random);
+					var randomMode = sort === 'random';
+					sortDirButton.disabled = randomMode;
+					sortDirButton.tabIndex = randomMode ? -1 : 0;
+				}
+
+				function syncSortDir(dir) {
+					var desc = dir !== 'asc';
+					sortDirButton.setAttribute('aria-pressed', desc ? 'true' : 'false');
+					sortDirButton.setAttribute('aria-label', desc ? '降順' : '昇順');
+				}
+
+				function nextSort(sort) {
+					var i = sortOrder.indexOf(sort);
+					if (i === -1) return 'random';
+					return sortOrder[(i + 1) % sortOrder.length];
+				}
+
+				applyGridOrder();
+
+				var viewOrder = ['wide', 'mobile'];
+				var viewLabels = {
+					wide: '表示: PC横。次: スマホ',
+					mobile: '表示: スマホ。次: PC横',
+				};
+
+				function syncTheme(theme) {
+					var light = theme === 'light';
+					themeButton.setAttribute('aria-pressed', light ? 'true' : 'false');
+					themeButton.setAttribute(
+						'aria-label',
+						light ? 'ダークモードに切り替え' : 'ライトモードに切り替え',
+					);
+					var meta = document.getElementById('theme-color');
+					if (meta) meta.content = light ? '#f6f6f4' : '#111111';
+				}
+
+				function syncView(view) {
+					if (viewOrder.indexOf(view) === -1) view = 'wide';
+					viewButton.setAttribute(
+						'aria-pressed',
+						view === 'wide' ? 'false' : 'true',
+					);
+					viewButton.setAttribute('aria-label', viewLabels[view] || viewLabels.wide);
+				}
+
+				function nextView(view) {
+					var i = viewOrder.indexOf(view);
+					if (i === -1) return 'wide';
+					return viewOrder[(i + 1) % viewOrder.length];
+				}
+
+				function syncMedia(media) {
+					var motion = media === 'gif';
+					mediaButton.setAttribute('aria-pressed', motion ? 'true' : 'false');
+					mediaButton.setAttribute(
+						'aria-label',
+						motion ? '表示: スクロールGIF。次: 静止画' : '表示: 静止画。次: スクロールGIF',
+					);
+				}
+
+				syncTheme(root.dataset.theme || 'dark');
+				syncView(root.dataset.view || 'wide');
+				syncMedia(root.dataset.media || 'still');
+				syncSort(root.dataset.sort || 'random');
+				syncSortDir(root.dataset.sortDir || 'desc');
+
+				themeButton.addEventListener('click', function () {
+					var next = root.dataset.theme === 'light' ? 'dark' : 'light';
+					root.dataset.theme = next;
+					localStorage.setItem(themeKey, next);
+					syncTheme(next);
+				});
+
+				viewButton.addEventListener('click', function () {
+					var current = root.dataset.view || 'wide';
+					var view = nextView(current);
+					root.dataset.view = view;
+					localStorage.setItem(viewKey, view);
+					syncView(view);
+				});
+
+				mediaButton.addEventListener('click', function () {
+					var next = root.dataset.media === 'gif' ? 'still' : 'gif';
+					root.dataset.media = next;
+					localStorage.setItem(mediaKey, next);
+					syncMedia(next);
+				});
+
+				sortButton.addEventListener('click', function () {
+					var current = root.dataset.sort || 'random';
+					var sort = nextSort(current);
+					root.dataset.sort = sort;
+					localStorage.setItem(sortKey, sort);
+					syncSort(sort);
+					applyGridOrder();
+				});
+
+				sortDirButton.addEventListener('click', function () {
+					if (root.dataset.sort === 'random') return;
+					var next = root.dataset.sortDir === 'asc' ? 'desc' : 'asc';
+					root.dataset.sortDir = next;
+					localStorage.setItem(sortDirKey, next);
+					syncSortDir(next);
+					applyGridOrder();
+				});
+			})();
+		</script>
+	</body>
+</html>

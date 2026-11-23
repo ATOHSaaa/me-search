@@ -1,0 +1,32 @@
+<script is:inline>
+	(function () {
+		var themeKey = 'me-search-theme';
+		var viewKey = 'me-search-view';
+		var mediaKey = 'me-search-media';
+		var sortKey = 'me-search-sort';
+		var sortDirKey = 'me-search-sort-dir';
+		var storedTheme = localStorage.getItem(themeKey);
+		var storedView = localStorage.getItem(viewKey);
+		var storedMedia = localStorage.getItem(mediaKey);
+		var storedSort = localStorage.getItem(sortKey);
+		var storedSortDir = localStorage.getItem(sortDirKey);
+		var theme = storedTheme === 'light' || storedTheme === 'dark' ? storedTheme : 'dark';
+		var media = storedMedia === 'gif' ? 'gif' : 'still';
+		var view = 'wide';
+		if (storedView === 'wide' || storedView === 'mobile') {
+			view = storedView;
+		} else if (storedView === 'pc' || storedView === 'tall') {
+			view = 'wide';
+		} else if (storedView === 'preview') {
+			view = 'wide';
+		}
+		document.documentElement.dataset.theme = theme;
+		document.documentElement.dataset.view = view;
+		document.documentElement.dataset.media = media;
+		document.documentElement.dataset.sort =
+			storedSort === 'added' || storedSort === 'domain' ? storedSort : 'random';
+		document.documentElement.dataset.sortDir = storedSortDir === 'asc' ? 'asc' : 'desc';
+		var meta = document.getElementById('theme-color');
+		if (meta) meta.content = theme === 'light' ? '#f6f6f4' : '#111111';
+	})();
+</script>

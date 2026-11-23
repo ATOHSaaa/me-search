@@ -1,0 +1,25 @@
+{
+  "name": "me-search",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.23.4"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "shoot": "node scripts/shoot.mjs",
+    "titles": "node scripts/fetch-titles.mjs",
+    "domains": "node scripts/fetch-domain-since.mjs"
+  },
+  "dependencies": {
+    "astro": "^7.4.13"
+  },
+  "devDependencies": {
+    "gifenc": "^1.0.3",
+    "playwright-core": "^1.65.1",
+    "sharp": "^0.35.5"
+  }
+}
