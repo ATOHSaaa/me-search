@@ -11,7 +11,7 @@
 		var storedSort = localStorage.getItem(sortKey);
 		var storedSortDir = localStorage.getItem(sortDirKey);
 		var theme = storedTheme === 'light' || storedTheme === 'dark' ? storedTheme : 'dark';
-		var media = storedMedia === 'gif' ? 'gif' : 'still';
+		var media = storedMedia === 'still' ? 'still' : 'gif';
 		var view = 'wide';
 		if (storedView === 'wide' || storedView === 'mobile') {
 			view = storedView;
