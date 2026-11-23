@@ -13,9 +13,9 @@ npm run build
 
 1. GitHub のリポジトリ **Settings → Pages → Build and deployment** で **GitHub Actions** を選ぶ（初回のみ）
 2. 本番の計測 ID はリポジトリ **Secrets** に `PUBLIC_GA_MEASUREMENT_ID` / `PUBLIC_CLARITY_PROJECT_ID` を登録（任意）
-3. 本番は **https://me.atohe.me**（`public/CNAME` + Actions の `ASTRO_SITE` / `ASTRO_BASE=/`）
+3. 本番は **https://me.atohs.me**（`public/CNAME` + Actions の `ASTRO_SITE` / `ASTRO_BASE=/`）
 
-DNS: `me.atohe.me` に **CNAME** → `atohsaaa.github.io`（GitHub Pages の案内に従う）
+DNS: `me.atohs.me` に **CNAME** → `atohsaaa.github.io`（GitHub Pages の案内に従う）
 
 ローカルでは `base` は `/` のままです。
 
