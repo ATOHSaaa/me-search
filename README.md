@@ -12,7 +12,7 @@ npm run build
 `main` へ push すると [GitHub Actions](.github/workflows/deploy-pages.yml) がビルドして Pages に公開します。
 
 1. GitHub のリポジトリ **Settings → Pages → Build and deployment** で **GitHub Actions** を選ぶ（初回のみ）
-2. **GA4** は GTM（`GTM-MDLDCN5V`）を本番ビルドで読み込み。Clarity だけ **Secrets** の `PUBLIC_CLARITY_PROJECT_ID`（任意）
+2. 本番ビルドで GTM（`GTM-MDLDCN5V`）と GA4（`G-E5S7S5192E`）を読み込み。GTM 内にも同じ GA4 タグがあると二重計測になるのでどちらか一方に。Clarity は **Secrets** の `PUBLIC_CLARITY_PROJECT_ID`（任意）
 3. 本番は **https://me.atohs.me**（`public/CNAME` + Actions の `ASTRO_SITE` / `ASTRO_BASE=/`）
 
 DNS: `me.atohs.me` に **CNAME** → `atohsaaa.github.io`（GitHub Pages の案内に従う）

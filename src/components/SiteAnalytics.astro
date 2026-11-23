@@ -23,7 +23,7 @@ const enabled = import.meta.env.PROD && Boolean(gtmId || gaId || clarityId);
 }
 
 {
-	enabled && !gtmId && gaId ? (
+	enabled && gaId ? (
 		<>
 			<script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
 			<script is:inline define:vars={{ gaId }}>
