@@ -27,4 +27,8 @@ const site = process.env.ASTRO_SITE ?? githubPagesSite(repository);
 export default defineConfig({
 	...(site ? { site } : {}),
 	base,
+	image: {
+		// 自前 SVG の OG 画像をビルド時に PNG へ最適化
+		dangerouslyProcessSVG: true,
+	},
 });
