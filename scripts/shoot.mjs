@@ -249,6 +249,8 @@ async function captureViewportSet(url, contextOptions, readyMs, gifDest, gifSize
 		await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {});
 
 		const useIntroMotion = motion.motionIntro === true;
+		let viewportPng;
+		let metaTitle = '';
 
 		if (useIntroMotion) {
 			await page.evaluate(async () => {
@@ -265,6 +267,8 @@ async function captureViewportSet(url, contextOptions, readyMs, gifDest, gifSize
 				await prepPage(page, readyMs);
 				await waitForPreviewPaint(page);
 			}
+			metaTitle = await readMetaTitle(page);
+			viewportPng = await page.screenshot({ type: 'png' });
 		} else {
 			const morimichiMotion = motion.motionMode === 'morimichi';
 			if (morimichiMotion) {
@@ -280,6 +284,10 @@ async function captureViewportSet(url, contextOptions, readyMs, gifDest, gifSize
 				await prepPage(page, readyMs);
 				await waitForPreviewPaint(page);
 			}
+			if (!morimichiMotion) {
+				metaTitle = await readMetaTitle(page);
+				viewportPng = await page.screenshot({ type: 'png' });
+			}
 			const plan = await detectScrollPlan(page);
 			const motionFrames = await captureMotionFrames(page, url, plan, motion);
 			await writeScrollGif(motionFrames, gifDest, { ...gifSize, gifDelayMs: motion.gifDelayMs });
@@ -293,11 +301,10 @@ async function captureViewportSet(url, contextOptions, readyMs, gifDest, gifSize
 				const settleMs = typeof readyMs === 'number' ? readyMs : 2800;
 				await page.waitForTimeout(Math.min(settleMs, 6000));
 				await waitForPreviewPaint(page);
+				metaTitle = await readMetaTitle(page);
+				viewportPng = await page.screenshot({ type: 'png' });
 			}
 		}
-
-		const metaTitle = await readMetaTitle(page);
-		const viewportPng = await page.screenshot({ type: 'png' });
 
 		return { viewportPng, metaTitle };
 	} finally {
