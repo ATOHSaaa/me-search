@@ -233,6 +233,7 @@ function motionOptsFromSite(site, viewport) {
 	if (site.motionMode === 'keyboard') motion.motionMode = 'keyboard';
 	if (Array.isArray(site.motionKeys) && site.motionKeys.length) motion.motionKeys = site.motionKeys;
 	if (site.motionMode === 'iconic') motion.motionMode = 'iconic';
+	if (site.motionMode === 'morimichi') motion.motionMode = 'morimichi';
 	if (site.motionIntro === true) motion.motionIntro = true;
 	if (Array.isArray(site.introSampleMs) && site.introSampleMs.length) {
 		motion.introSampleMs = site.introSampleMs;
@@ -265,7 +266,13 @@ async function captureViewportSet(url, contextOptions, readyMs, gifDest, gifSize
 				await waitForPreviewPaint(page);
 			}
 		} else {
-			if (shot === 'iconic') {
+			const morimichiMotion = motion.motionMode === 'morimichi';
+			if (morimichiMotion) {
+				await page.evaluate(async () => {
+					if (document.fonts?.ready) await document.fonts.ready;
+				});
+				await page.waitForTimeout(500);
+			} else if (shot === 'iconic') {
 				await prepPageIconic(page, readyMs);
 			} else if (shot === 'fujimaki') {
 				await prepPageFujimaki(page, readyMs);
@@ -276,6 +283,17 @@ async function captureViewportSet(url, contextOptions, readyMs, gifDest, gifSize
 			const plan = await detectScrollPlan(page);
 			const motionFrames = await captureMotionFrames(page, url, plan, motion);
 			await writeScrollGif(motionFrames, gifDest, { ...gifSize, gifDelayMs: motion.gifDelayMs });
+			if (morimichiMotion) {
+				await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 45_000 });
+				await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {});
+				const gate = page.locator('[data-login-gate]');
+				if (await gate.isVisible({ timeout: 8000 }).catch(() => false)) {
+					await gate.click({ timeout: 10_000 });
+				}
+				const settleMs = typeof readyMs === 'number' ? readyMs : 2800;
+				await page.waitForTimeout(Math.min(settleMs, 6000));
+				await waitForPreviewPaint(page);
+			}
 		}
 
 		const metaTitle = await readMetaTitle(page);

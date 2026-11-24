@@ -289,6 +289,46 @@ const ICONIC_WAKE_MS = [400, 950, 1800, 3000, 4800, 7200, 9800, 12800, 15500];
 const ICONIC_NAV_TRANSITION_MS = [450, 1100, 2500, 4200];
 const ICONIC_NAV = ['01Games', '02Apps', '03Client', '04About', '05Contact'];
 
+const MORIMICHI_WAKE_MS = [250, 550, 950, 1500, 2300, 3400, 5000, 7200, 10000, 13500];
+
+async function collectMorimichiFrames(page, motion = {}) {
+	const gate = page.locator('[data-login-gate]');
+	const frames = [];
+
+	await page.waitForTimeout(350);
+	const gateVisible = await gate.isVisible({ timeout: 25_000 }).catch(() => false);
+	if (gateVisible) {
+		frames.push(await page.screenshot({ type: 'png' }));
+		await gate.click({ timeout: 10_000 });
+	}
+
+	const sampleMs =
+		Array.isArray(motion.introSampleMs) && motion.introSampleMs.length
+			? motion.introSampleMs
+			: MORIMICHI_WAKE_MS;
+	let prev = 0;
+	for (const targetMs of sampleMs) {
+		await page.waitForTimeout(Math.max(0, targetMs - prev));
+		prev = targetMs;
+		frames.push(await page.screenshot({ type: 'png' }));
+	}
+
+	await page.waitForFunction(
+		() => {
+			const content = document.querySelector('[data-page-content]');
+			return !content || !content.hasAttribute('inert');
+		},
+		null,
+		{ timeout: 15_000 },
+	).catch(() => {});
+
+	const navFrames = await collectNavInteractFrames(page, { skipInitialShot: true });
+	if (navFrames) {
+		return [...frames, ...navFrames];
+	}
+	return frames.length ? frames : null;
+}
+
 async function collectIconicFrames(page) {
 	const frames = [];
 
@@ -327,6 +367,10 @@ async function collectIconicFrames(page) {
 }
 
 export async function captureMotionFrames(page, startUrl, plan, motion = {}) {
+	if (motion.motionMode === 'morimichi') {
+		const morimichiFrames = await collectMorimichiFrames(page, motion);
+		if (morimichiFrames) return morimichiFrames;
+	}
 	if (motion.motionMode === 'iconic') {
 		const iconicFrames = await collectIconicFrames(page);
 		if (iconicFrames) return iconicFrames;
